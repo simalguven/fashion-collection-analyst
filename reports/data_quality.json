@@ -1,0 +1,40 @@
+{
+  "metadata": {
+    "rows": 44072,
+    "missing_by_column": {
+      "articleType": 0,
+      "baseColour": 0,
+      "masterCategory": 0,
+      "season": 0,
+      "usage": 0,
+      "year": 0
+    },
+    "duplicate_ids": 0,
+    "duplicate_display_names": 13271,
+    "article_types": 141,
+    "article_types_under_10_items": 37,
+    "top_5_article_type_share": 0.401,
+    "year_min": 2007,
+    "year_max": 2019,
+    "share_from_2011_2013": 0.706,
+    "master_category_share": {
+      "Apparel": 0.4847,
+      "Accessories": 0.2551,
+      "Footwear": 0.2087,
+      "Personal Care": 0.0485,
+      "Free Items": 0.0024,
+      "Sporting Goods": 0.0006,
+      "Home": 0.0
+    }
+  },
+  "images": {
+    "sampled": 2000,
+    "unreadable": 0,
+    "blank": 0,
+    "exact_duplicates": 1,
+    "near_duplicates": 31,
+    "dropped": 1,
+    "most_common_size": "60x80",
+    "share_most_common_size": 0.999
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "backbone": "dinov2",
+  "k": 12,
+  "items": 1999,
+  "colour_extraction": {
+    "items_scored": 986,
+    "items_with_unmapped_label": 18,
+    "accuracy_with_background_removal": 0.517,
+    "accuracy_whole_image": 0.167,
+    "accuracy_always_majority_family": 0.212,
+    "accuracy_by_department": {
+      "Accessories": 0.492,
+      "Apparel": 0.527,
+      "Footwear": 0.573,
+      "Personal Care": 0.306
+    }
+  }
+}
