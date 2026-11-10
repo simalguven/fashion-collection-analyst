@@ -24,8 +24,8 @@ import pandas as pd
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 
 from compare_colour_methods import TEST_SIZE, TEST_START, score
-from fashion_analyst import colour_classifier, colours, data, embeddings, quality
-from fashion_analyst.config import ARTIFACT_DIR, BACKBONES, IMAGE_DIR, REPORT_DIR
+from catalog_vision import colour_classifier, colours, data, embeddings, quality
+from catalog_vision.config import ARTIFACT_DIR, BACKBONES, IMAGE_DIR, REPORT_DIR
 
 EXTRA_START = TEST_START + TEST_SIZE
 EXTRA_SIZE = 6000

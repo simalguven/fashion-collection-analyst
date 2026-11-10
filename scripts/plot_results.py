@@ -10,8 +10,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
-from fashion_analyst.config import FIGURE_DIR, REPORT_DIR
-from fashion_analyst.plots import plot_results
+from catalog_vision.config import FIGURE_DIR, REPORT_DIR
+from catalog_vision.plots import plot_results
 
 
 def load(name: str) -> dict:

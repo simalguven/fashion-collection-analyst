@@ -1,4 +1,4 @@
-# README
+# Visual product catalogue analysis with embeddings and an LLM agent
 
 Turns product photos into **style groups** and **colour palettes**, then answers questions about them in plain English through a **tested AI agent**.
 
@@ -54,17 +54,6 @@ Steps 1–5 run with one command. Steps 6–7 need a free Groq key.
 - **Bags are the most colourful.** 72% of bags are not black, white or grey, against 15% of watches and 9% of sports shoes.
 - **The catalogue is old.** 71% of products are from 2011–2013, so it says nothing about current trends.
 
-## Recommendations
-
-| Do this | Because |
-|---|---|
-| Use style groups and "find similar" for browsing and range reviews now | They need no manual tagging and match the catalogue well |
-| Have a person check colours before buying or design decisions | About 1 product in 4 still gets the wrong colour family |
-| Test the colour model on 100–200 hand-labelled products before using it on a new catalogue | It has only seen this catalogue's small studio photos |
-| Review or split the 3 mixed groups | They hold a third of the products |
-| Add sales and recent product data before making trend decisions | The agent correctly refuses these questions today |
-| Run the agent tests before every agent change | They caught a crash and a silent colour substitution |
-
 ## Agent evaluation
 
 A question passes only if the agent used the right tools, made at most 5 tool calls, and gave an answer matching values computed from the data.
@@ -110,7 +99,7 @@ Limits: there are only 20 questions, the same questions guided the fixes, and th
 | Same classifier, 7,782 training products | **71.0%** |
 
 - **OpenCV fixes:** the first OpenCV version scored 39.8%, because 8-bit LAB overweights lightness. True CIELAB and skin removal fixed most of that.
-- **What the classifier is:** logistic regression trained on catalogue colour labels ([colour_classifier.py](src/fashion_analyst/colour_classifier.py)). OpenCV is kept for the exact shade.
+- **What the classifier is:** logistic regression trained on catalogue colour labels ([colour_classifier.py](src/catalog_vision/colour_classifier.py)). OpenCV is kept for the exact shade.
 - **Fair comparison:**
   - Settings were chosen on training data only.
   - 129 training images that were copies of test images were removed.
@@ -145,7 +134,7 @@ python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
 python scripts/run_pipeline.py              # steps 1–5: data, groups, colours, figures
-pytest tests                                # no API key needed
+pytest tests                                # unit tests
 
 cp .env.example .env                        # add a free key from console.groq.com
 python evals/run_eval.py --label myrun      # steps 6–7: agent tests
@@ -164,15 +153,15 @@ python scripts/plot_results.py              # redraw the results figure
 
 </details>
 
-Walkthrough notebook: [notebooks/collection_analyst.ipynb](notebooks/collection_analyst.ipynb). Only the Groq model `qwen/qwen3.8-27b` has been tested. To use another model, change `AGENT_MODEL` in `.env`.
+Walkthrough notebook: [notebooks/walkthrough.ipynb](notebooks/walkthrough.ipynb). Only the Groq model `qwen/qwen3.8-27b` has been tested. To use another model, change `AGENT_MODEL` in `.env`.
 
 ## Project structure
 
 ```
-src/fashion_analyst/   pipeline code: data, quality, embeddings, clustering, colours, tools, agent
+src/catalog_vision/   pipeline code: data, quality, embeddings, clustering, colours, tools, agent
 scripts/               pipeline, colour training, evaluations, figures
 evals/                 agent test questions and grading
-tests/                 unit tests (no LLM needed)
+tests/                 unit tests
 notebooks/             walkthrough with outputs
 reports/               figures, metrics and evaluation reports
 ```

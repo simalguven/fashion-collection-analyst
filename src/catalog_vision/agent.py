@@ -14,8 +14,7 @@ from langgraph.prebuilt import ToolNode, tools_condition
 from .config import DEFAULT_AGENT_MODEL, ROOT
 from .tools import CollectionStore, build_tools
 
-SYSTEM_PROMPT = """You are a fashion collection analyst. You answer questions about a \
-sample of product photos that has been grouped into style clusters.
+SYSTEM_PROMPT = """You answer questions about a sample of product photos that has been grouped into style clusters.
 
 Base every factual statement on tool results from this conversation. If a tool returns an \
 error, tell the user what went wrong. The collection only contains product images and \

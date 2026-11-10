@@ -13,10 +13,10 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "evals")]
 
 from cases import MAX_TOOL_CALLS, build_cases, declines, has_number, rejects_claim, tools_acceptable
-from fashion_analyst import colour_classifier, colours
-from fashion_analyst.agent import ask, build_agent
-from fashion_analyst.config import ARTIFACT_DIR
-from fashion_analyst.tools import CollectionError, CollectionStore, _respond
+from catalog_vision import colour_classifier, colours
+from catalog_vision.agent import ask, build_agent
+from catalog_vision.config import ARTIFACT_DIR
+from catalog_vision.tools import CollectionError, CollectionStore, _respond
 
 
 def solid_on_white(colour, size=60):
@@ -175,7 +175,7 @@ class FlakyModel:
 
 def test_agent_recovers_from_malformed_tool_call(store, monkeypatch):
     model = FlakyModel()
-    monkeypatch.setattr("fashion_analyst.agent.init_chat_model", lambda *a, **k: model)
+    monkeypatch.setattr("catalog_vision.agent.init_chat_model", lambda *a, **k: model)
     run = ask(build_agent(store, model_name="stub"), "hello")
     assert run.answer == "recovered" and len(model.calls) == 2
     assert "invalid" in model.calls[1][-1].content

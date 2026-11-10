@@ -14,9 +14,9 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "evals")]
 
 from cases import build_cases, tools_acceptable
-from fashion_analyst.agent import ask, build_agent
-from fashion_analyst.config import REPORT_DIR
-from fashion_analyst.tools import CollectionStore
+from catalog_vision.agent import ask, build_agent
+from catalog_vision.config import REPORT_DIR
+from catalog_vision.tools import CollectionStore
 from langgraph.errors import GraphRecursionError
 
 RATE_LIMIT_WAIT_SECONDS = 30

@@ -16,8 +16,8 @@ import numpy as np
 import pandas as pd
 from scipy.stats import hypergeom
 
-from fashion_analyst import embeddings, quality
-from fashion_analyst.config import ARTIFACT_DIR, BACKBONES, IMAGE_DIR, REPORT_DIR
+from catalog_vision import embeddings, quality
+from catalog_vision.config import ARTIFACT_DIR, BACKBONES, IMAGE_DIR, REPORT_DIR
 
 K_VALUES = (1, 5, 10)
 LABELS = ("articleType", "subCategory")

@@ -19,8 +19,8 @@ import pandas as pd
 from sklearn.metrics import f1_score
 from sklearn.model_selection import StratifiedKFold, cross_val_predict
 
-from fashion_analyst import colour_classifier, colours, data, embeddings, quality
-from fashion_analyst.config import ARTIFACT_DIR, BACKBONES, IMAGE_DIR, REPORT_DIR
+from catalog_vision import colour_classifier, colours, data, embeddings, quality
+from catalog_vision.config import ARTIFACT_DIR, BACKBONES, IMAGE_DIR, REPORT_DIR
 
 TEST_START = 2000
 TEST_SIZE = 1000

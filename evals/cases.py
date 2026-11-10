@@ -4,7 +4,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Callable
 
-from fashion_analyst.tools import CollectionStore
+from catalog_vision.tools import CollectionStore
 
 
 MAX_TOOL_CALLS = 5

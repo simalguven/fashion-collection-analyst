@@ -13,8 +13,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import numpy as np
 import pandas as pd
 
-from fashion_analyst import clustering, colour_classifier, colours, data, embeddings, plots, quality
-from fashion_analyst.config import (
+from catalog_vision import clustering, colour_classifier, colours, data, embeddings, plots, quality
+from catalog_vision.config import (
     ARTIFACT_DIR,
     BACKBONES,
     CLUSTER_BACKBONE,
