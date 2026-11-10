@@ -1,4 +1,4 @@
-# Fashion collection analyst
+# README
 
 Turns product photos into **style groups** and **colour palettes**, then answers questions about them in plain English through a **tested AI agent**.
 
