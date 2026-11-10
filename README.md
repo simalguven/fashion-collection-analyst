@@ -2,7 +2,7 @@
 
 A small demo that turns a folder of product photos into style groups and colour palettes, then lets you ask questions about them in plain English through a tested AI agent.
 
-Built by Şimal Güven as a portfolio piece for the Working Student (AI) role at yoona.ai.
+
 
 ![Style clusters, typical products and dominant colours](reports/figures/cluster_gallery.png)
 
