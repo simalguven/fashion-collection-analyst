@@ -29,6 +29,42 @@ STYLE = {
 }
 
 
+USED_COLOUR = CATEGORY_COLOURS["Apparel"]
+
+
+def plot_results(panels: list[dict], path) -> None:
+    """Horizontal bars per panel; bars marked `used` are what the demo runs on.
+
+    Each panel: {"title": str, "bars": [(label, share, used), ...]}.
+    """
+    with plt.rc_context(STYLE):
+        fig, axes = plt.subplots(1, len(panels), figsize=(12, 3.8))
+        fig.subplots_adjust(left=0.2, right=0.97, top=0.78, bottom=0.1, wspace=0.62)
+        rows = max(len(panel["bars"]) for panel in panels)
+        for ax, panel in zip(np.atleast_1d(axes), panels):
+            labels, shares, used = zip(*panel["bars"])
+            y = rows - 1 - np.arange(len(labels))
+            ax.barh(y, shares, height=0.62, color=[USED_COLOUR if u else OTHER_COLOUR for u in used])
+            ax.set_ylim(-0.6, rows - 0.4)
+            for yi, share in zip(y, shares):
+                ax.text(share + 0.015, yi, f"{share:.0%}", va="center", color=TEXT, fontsize=10)
+            ax.set_yticks(y, labels, color=TEXT)
+            ax.set_xlim(0, 1.0)
+            ax.set_xticks([0, 0.25, 0.5, 0.75, 1.0], ["0%", "25%", "50%", "75%", "100%"], color=MUTED)
+            ax.tick_params(length=0)
+            ax.xaxis.grid(True, color=GRID, linewidth=0.8)
+            ax.set_axisbelow(True)
+            for spine in ax.spines.values():
+                spine.set_visible(False)
+            ax.set_title(panel["title"], loc="left", fontsize=11.5, fontweight="bold", pad=10)
+        fig.text(0.01, 0.98, "Results on 1,000 products never used in development", ha="left",
+                 va="top", fontsize=14, fontweight="bold")
+        fig.text(0.01, 0.905, "Blue: what the demo uses. Grey: compared alternatives and baselines.",
+                 color=MUTED, ha="left", va="top")
+        fig.savefig(path, dpi=150, bbox_inches="tight", pad_inches=0.15)
+        plt.close(fig)
+
+
 def plot_style_map(items: pd.DataFrame, path) -> None:
     """2D map of the collection, coloured by department, with cluster numbers."""
     with plt.rc_context(STYLE):

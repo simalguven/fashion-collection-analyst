@@ -1,0 +1,112 @@
+{
+  "note": "C chosen by 5-fold cross-validation on training products only; unseen products scored with that fixed C at each training size.",
+  "training_products": 7782,
+  "removed_as_duplicates_of_unseen": 129,
+  "cross_validated_accuracy_by_c": {
+    "0.003": 0.732,
+    "0.01": 0.731,
+    "0.03": 0.718,
+    "0.1": 0.691
+  },
+  "chosen_c": 0.003,
+  "unseen_accuracy_by_training_size": [
+    {
+      "training_products": 1946,
+      "accuracy": 0.673,
+      "ci_95": [
+        0.644,
+        0.702
+      ],
+      "macro_f1": 0.576,
+      "products": 992
+    },
+    {
+      "training_products": 3946,
+      "accuracy": 0.698,
+      "ci_95": [
+        0.668,
+        0.725
+      ],
+      "macro_f1": 0.639,
+      "products": 992
+    },
+    {
+      "training_products": 5946,
+      "accuracy": 0.706,
+      "ci_95": [
+        0.677,
+        0.733
+      ],
+      "macro_f1": 0.644,
+      "products": 992
+    },
+    {
+      "training_products": 7782,
+      "accuracy": 0.71,
+      "ci_95": [
+        0.681,
+        0.737
+      ],
+      "macro_f1": 0.661,
+      "products": 992
+    }
+  ],
+  "unseen_accuracy_by_department": {
+    "Accessories": 0.701,
+    "Apparel": 0.727,
+    "Footwear": 0.724,
+    "Personal Care": 0.578
+  },
+  "top_confusions": [
+    {
+      "label": "Grey",
+      "predicted": "White",
+      "count": 22
+    },
+    {
+      "label": "Grey",
+      "predicted": "Black",
+      "count": 20
+    },
+    {
+      "label": "Blue",
+      "predicted": "Black",
+      "count": 19
+    },
+    {
+      "label": "Blue",
+      "predicted": "White",
+      "count": 11
+    },
+    {
+      "label": "White",
+      "predicted": "Grey",
+      "count": 11
+    },
+    {
+      "label": "Black",
+      "predicted": "Brown",
+      "count": 10
+    },
+    {
+      "label": "Brown",
+      "predicted": "Black",
+      "count": 10
+    },
+    {
+      "label": "Black",
+      "predicted": "Blue",
+      "count": 7
+    },
+    {
+      "label": "Blue",
+      "predicted": "Green",
+      "count": 7
+    },
+    {
+      "label": "Neutral",
+      "predicted": "White",
+      "count": 7
+    }
+  ]
+}

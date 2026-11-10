@@ -1,0 +1,700 @@
+{
+  "note": "A retrieved item is correct when its catalogue label matches the query's.",
+  "development": {
+    "articleType": {
+      "queries": 1975,
+      "random": {
+        "recall@1": 0.051,
+        "precision@1": 0.051,
+        "recall@5": 0.211,
+        "precision@5": 0.051,
+        "recall@10": 0.342,
+        "precision@10": 0.051
+      },
+      "clip": {
+        "recall@1": {
+          "mean": 0.754,
+          "ci_95": [
+            0.735,
+            0.773
+          ]
+        },
+        "precision@1": {
+          "mean": 0.754,
+          "ci_95": [
+            0.735,
+            0.774
+          ]
+        },
+        "recall@5": {
+          "mean": 0.919,
+          "ci_95": [
+            0.907,
+            0.931
+          ]
+        },
+        "precision@5": {
+          "mean": 0.709,
+          "ci_95": [
+            0.694,
+            0.725
+          ]
+        },
+        "recall@10": {
+          "mean": 0.952,
+          "ci_95": [
+            0.943,
+            0.962
+          ]
+        },
+        "precision@10": {
+          "mean": 0.673,
+          "ci_95": [
+            0.659,
+            0.687
+          ]
+        }
+      },
+      "dinov2": {
+        "recall@1": {
+          "mean": 0.786,
+          "ci_95": [
+            0.769,
+            0.804
+          ]
+        },
+        "precision@1": {
+          "mean": 0.786,
+          "ci_95": [
+            0.767,
+            0.803
+          ]
+        },
+        "recall@5": {
+          "mean": 0.928,
+          "ci_95": [
+            0.916,
+            0.94
+          ]
+        },
+        "precision@5": {
+          "mean": 0.723,
+          "ci_95": [
+            0.708,
+            0.737
+          ]
+        },
+        "recall@10": {
+          "mean": 0.957,
+          "ci_95": [
+            0.948,
+            0.966
+          ]
+        },
+        "precision@10": {
+          "mean": 0.683,
+          "ci_95": [
+            0.669,
+            0.698
+          ]
+        }
+      },
+      "dinov2_minus_clip": {
+        "recall@1": {
+          "mean": 0.032,
+          "ci_95": [
+            0.012,
+            0.051
+          ]
+        },
+        "precision@1": {
+          "mean": 0.032,
+          "ci_95": [
+            0.013,
+            0.051
+          ]
+        },
+        "recall@5": {
+          "mean": 0.009,
+          "ci_95": [
+            -0.003,
+            0.021
+          ]
+        },
+        "precision@5": {
+          "mean": 0.013,
+          "ci_95": [
+            0.003,
+            0.024
+          ]
+        },
+        "recall@10": {
+          "mean": 0.005,
+          "ci_95": [
+            -0.005,
+            0.014
+          ]
+        },
+        "precision@10": {
+          "mean": 0.01,
+          "ci_95": [
+            0.002,
+            0.019
+          ]
+        }
+      }
+    },
+    "subCategory": {
+      "queries": 1994,
+      "random": {
+        "recall@1": 0.17,
+        "precision@1": 0.17,
+        "recall@5": 0.49,
+        "precision@5": 0.17,
+        "recall@10": 0.626,
+        "precision@10": 0.17
+      },
+      "clip": {
+        "recall@1": {
+          "mean": 0.906,
+          "ci_95": [
+            0.892,
+            0.919
+          ]
+        },
+        "precision@1": {
+          "mean": 0.906,
+          "ci_95": [
+            0.892,
+            0.918
+          ]
+        },
+        "recall@5": {
+          "mean": 0.973,
+          "ci_95": [
+            0.966,
+            0.98
+          ]
+        },
+        "precision@5": {
+          "mean": 0.884,
+          "ci_95": [
+            0.873,
+            0.895
+          ]
+        },
+        "recall@10": {
+          "mean": 0.982,
+          "ci_95": [
+            0.976,
+            0.987
+          ]
+        },
+        "precision@10": {
+          "mean": 0.866,
+          "ci_95": [
+            0.855,
+            0.877
+          ]
+        }
+      },
+      "dinov2": {
+        "recall@1": {
+          "mean": 0.926,
+          "ci_95": [
+            0.914,
+            0.937
+          ]
+        },
+        "precision@1": {
+          "mean": 0.926,
+          "ci_95": [
+            0.914,
+            0.937
+          ]
+        },
+        "recall@5": {
+          "mean": 0.978,
+          "ci_95": [
+            0.971,
+            0.984
+          ]
+        },
+        "precision@5": {
+          "mean": 0.893,
+          "ci_95": [
+            0.883,
+            0.904
+          ]
+        },
+        "recall@10": {
+          "mean": 0.985,
+          "ci_95": [
+            0.979,
+            0.99
+          ]
+        },
+        "precision@10": {
+          "mean": 0.872,
+          "ci_95": [
+            0.861,
+            0.882
+          ]
+        }
+      },
+      "dinov2_minus_clip": {
+        "recall@1": {
+          "mean": 0.02,
+          "ci_95": [
+            0.007,
+            0.033
+          ]
+        },
+        "precision@1": {
+          "mean": 0.02,
+          "ci_95": [
+            0.006,
+            0.034
+          ]
+        },
+        "recall@5": {
+          "mean": 0.005,
+          "ci_95": [
+            -0.002,
+            0.012
+          ]
+        },
+        "precision@5": {
+          "mean": 0.009,
+          "ci_95": [
+            0.002,
+            0.016
+          ]
+        },
+        "recall@10": {
+          "mean": 0.003,
+          "ci_95": [
+            -0.003,
+            0.008
+          ]
+        },
+        "precision@10": {
+          "mean": 0.006,
+          "ci_95": [
+            0.0,
+            0.012
+          ]
+        }
+      }
+    }
+  },
+  "unseen_sample": {
+    "articleType": {
+      "queries": 977,
+      "random": {
+        "recall@1": 0.052,
+        "precision@1": 0.052,
+        "recall@5": 0.214,
+        "precision@5": 0.052,
+        "recall@10": 0.352,
+        "precision@10": 0.052
+      },
+      "clip": {
+        "recall@1": {
+          "mean": 0.752,
+          "ci_95": [
+            0.726,
+            0.779
+          ]
+        },
+        "precision@1": {
+          "mean": 0.752,
+          "ci_95": [
+            0.726,
+            0.78
+          ]
+        },
+        "recall@5": {
+          "mean": 0.919,
+          "ci_95": [
+            0.903,
+            0.936
+          ]
+        },
+        "precision@5": {
+          "mean": 0.698,
+          "ci_95": [
+            0.676,
+            0.719
+          ]
+        },
+        "recall@10": {
+          "mean": 0.947,
+          "ci_95": [
+            0.932,
+            0.96
+          ]
+        },
+        "precision@10": {
+          "mean": 0.655,
+          "ci_95": [
+            0.634,
+            0.675
+          ]
+        }
+      },
+      "dinov2": {
+        "recall@1": {
+          "mean": 0.766,
+          "ci_95": [
+            0.738,
+            0.792
+          ]
+        },
+        "precision@1": {
+          "mean": 0.766,
+          "ci_95": [
+            0.739,
+            0.791
+          ]
+        },
+        "recall@5": {
+          "mean": 0.92,
+          "ci_95": [
+            0.902,
+            0.937
+          ]
+        },
+        "precision@5": {
+          "mean": 0.712,
+          "ci_95": [
+            0.691,
+            0.734
+          ]
+        },
+        "recall@10": {
+          "mean": 0.949,
+          "ci_95": [
+            0.936,
+            0.962
+          ]
+        },
+        "precision@10": {
+          "mean": 0.668,
+          "ci_95": [
+            0.647,
+            0.689
+          ]
+        }
+      },
+      "dinov2_minus_clip": {
+        "recall@1": {
+          "mean": 0.013,
+          "ci_95": [
+            -0.013,
+            0.039
+          ]
+        },
+        "precision@1": {
+          "mean": 0.013,
+          "ci_95": [
+            -0.013,
+            0.04
+          ]
+        },
+        "recall@5": {
+          "mean": 0.001,
+          "ci_95": [
+            -0.016,
+            0.016
+          ]
+        },
+        "precision@5": {
+          "mean": 0.014,
+          "ci_95": [
+            -0.0,
+            0.028
+          ]
+        },
+        "recall@10": {
+          "mean": 0.002,
+          "ci_95": [
+            -0.011,
+            0.014
+          ]
+        },
+        "precision@10": {
+          "mean": 0.013,
+          "ci_95": [
+            0.002,
+            0.024
+          ]
+        }
+      }
+    },
+    "subCategory": {
+      "queries": 997,
+      "random": {
+        "recall@1": 0.166,
+        "precision@1": 0.166,
+        "recall@5": 0.49,
+        "precision@5": 0.166,
+        "recall@10": 0.629,
+        "precision@10": 0.166
+      },
+      "clip": {
+        "recall@1": {
+          "mean": 0.898,
+          "ci_95": [
+            0.878,
+            0.916
+          ]
+        },
+        "precision@1": {
+          "mean": 0.898,
+          "ci_95": [
+            0.878,
+            0.917
+          ]
+        },
+        "recall@5": {
+          "mean": 0.964,
+          "ci_95": [
+            0.952,
+            0.975
+          ]
+        },
+        "precision@5": {
+          "mean": 0.864,
+          "ci_95": [
+            0.847,
+            0.881
+          ]
+        },
+        "recall@10": {
+          "mean": 0.98,
+          "ci_95": [
+            0.971,
+            0.988
+          ]
+        },
+        "precision@10": {
+          "mean": 0.845,
+          "ci_95": [
+            0.828,
+            0.861
+          ]
+        }
+      },
+      "dinov2": {
+        "recall@1": {
+          "mean": 0.904,
+          "ci_95": [
+            0.885,
+            0.923
+          ]
+        },
+        "precision@1": {
+          "mean": 0.904,
+          "ci_95": [
+            0.885,
+            0.923
+          ]
+        },
+        "recall@5": {
+          "mean": 0.964,
+          "ci_95": [
+            0.952,
+            0.975
+          ]
+        },
+        "precision@5": {
+          "mean": 0.878,
+          "ci_95": [
+            0.862,
+            0.894
+          ]
+        },
+        "recall@10": {
+          "mean": 0.973,
+          "ci_95": [
+            0.962,
+            0.983
+          ]
+        },
+        "precision@10": {
+          "mean": 0.857,
+          "ci_95": [
+            0.84,
+            0.873
+          ]
+        }
+      },
+      "dinov2_minus_clip": {
+        "recall@1": {
+          "mean": 0.006,
+          "ci_95": [
+            -0.011,
+            0.022
+          ]
+        },
+        "precision@1": {
+          "mean": 0.006,
+          "ci_95": [
+            -0.012,
+            0.023
+          ]
+        },
+        "recall@5": {
+          "mean": 0.0,
+          "ci_95": [
+            -0.011,
+            0.011
+          ]
+        },
+        "precision@5": {
+          "mean": 0.014,
+          "ci_95": [
+            0.003,
+            0.024
+          ]
+        },
+        "recall@10": {
+          "mean": -0.007,
+          "ci_95": [
+            -0.016,
+            0.001
+          ]
+        },
+        "precision@10": {
+          "mean": 0.012,
+          "ci_95": [
+            0.003,
+            0.021
+          ]
+        }
+      }
+    }
+  },
+  "dinov2_precision_at_5_worst_types": [
+    {
+      "type": "Flats",
+      "mean": 0.08,
+      "size": 15
+    },
+    {
+      "type": "Clutches",
+      "mean": 0.108,
+      "size": 13
+    },
+    {
+      "type": "Tunics",
+      "mean": 0.173,
+      "size": 15
+    },
+    {
+      "type": "Sweaters",
+      "mean": 0.2,
+      "size": 16
+    },
+    {
+      "type": "Capris",
+      "mean": 0.286,
+      "size": 14
+    },
+    {
+      "type": "Jackets",
+      "mean": 0.356,
+      "size": 18
+    },
+    {
+      "type": "Nightdress",
+      "mean": 0.382,
+      "size": 11
+    },
+    {
+      "type": "Tops",
+      "mean": 0.408,
+      "size": 71
+    }
+  ],
+  "dinov2_precision_at_5_best_types": [
+    {
+      "type": "Watches",
+      "mean": 0.953,
+      "size": 103
+    },
+    {
+      "type": "Backpacks",
+      "mean": 0.962,
+      "size": 26
+    },
+    {
+      "type": "Socks",
+      "mean": 0.984,
+      "size": 25
+    },
+    {
+      "type": "Bra",
+      "mean": 1.0,
+      "size": 18
+    },
+    {
+      "type": "Sunglasses",
+      "mean": 1.0,
+      "size": 54
+    }
+  ],
+  "dinov2_top_confusions": [
+    {
+      "query": "Sports Shoes",
+      "retrieved": "Casual Shoes",
+      "count": 143
+    },
+    {
+      "query": "Casual Shoes",
+      "retrieved": "Sports Shoes",
+      "count": 123
+    },
+    {
+      "query": "Tops",
+      "retrieved": "Tshirts",
+      "count": 123
+    },
+    {
+      "query": "Casual Shoes",
+      "retrieved": "Formal Shoes",
+      "count": 86
+    },
+    {
+      "query": "Tshirts",
+      "retrieved": "Tops",
+      "count": 74
+    },
+    {
+      "query": "Formal Shoes",
+      "retrieved": "Casual Shoes",
+      "count": 47
+    },
+    {
+      "query": "Flats",
+      "retrieved": "Heels",
+      "count": 45
+    },
+    {
+      "query": "Heels",
+      "retrieved": "Flats",
+      "count": 40
+    },
+    {
+      "query": "Dresses",
+      "retrieved": "Tops",
+      "count": 37
+    },
+    {
+      "query": "Sweatshirts",
+      "retrieved": "Tshirts",
+      "count": 33
+    }
+  ]
+}

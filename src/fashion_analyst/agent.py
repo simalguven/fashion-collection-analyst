@@ -19,7 +19,10 @@ sample of product photos that has been grouped into style clusters.
 
 Base every factual statement on tool results from this conversation. If a tool returns an \
 error, tell the user what went wrong. The collection only contains product images and \
-catalogue labels."""
+catalogue labels.
+
+If the user asks for something the collection does not track, say so and ask what they \
+would like instead. Do not run the query with a substitute of your own choosing."""
 
 MAX_GRAPH_STEPS = 12
 MAX_INVALID_TOOL_CALL_RETRIES = 2

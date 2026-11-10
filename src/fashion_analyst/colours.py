@@ -159,21 +159,33 @@ def _hex_to_rgb(value: str) -> tuple[int, int, int]:
     return tuple(int(value[i : i + 2], 16) for i in (1, 3, 5))
 
 
-def build_palette(names: pd.Series, hexes: pd.Series, top: int = 5) -> list[dict]:
-    """Summarise a group of products by their main colours.
+def build_palette(families: pd.Series, shade_names: pd.Series, hexes: pd.Series,
+                  top: int = 5) -> list[dict]:
+    """Summarise a group of products by their colour families.
 
-    Averaging pixels across many different products turns every palette grey,
-    so each swatch instead counts products and shows the mean of their colours.
+    Shares count products per family. Each swatch is the mean measured shade of
+    the products whose OpenCV shade falls in the same family, or a reference
+    colour when none does. Averaging pixels across products would turn every
+    swatch grey.
     """
-    shares = names.value_counts(normalize=True).head(top)
+    shares = families.value_counts(normalize=True).head(top)
+    shade_families = shade_names.map(family)
     palette = []
     for name, share in shares.items():
-        rgb = np.array([_hex_to_rgb(h) for h in hexes[names == name]])
-        palette.append(
-            {"name": name, "hex": lab_to_hex(_rgb_to_lab(rgb).mean(axis=0)), "share": round(float(share), 3)}
-        )
+        agrees = (families == name) & (shade_families == name)
+        if agrees.any():
+            rgb = np.array([_hex_to_rgb(h) for h in hexes[agrees]])
+            swatch = lab_to_hex(_rgb_to_lab(rgb).mean(axis=0))
+        else:
+            swatch = "#{:02x}{:02x}{:02x}".format(*REFERENCE_COLOURS[FAMILY_REFERENCE[name]])
+        palette.append({"name": name, "hex": swatch, "share": round(float(share), 3)})
     return palette
 
 
 def family(colour_name) -> str | None:
     return COLOUR_FAMILIES.get(colour_name)
+
+
+FAMILIES = sorted(set(COLOUR_FAMILIES.values()))
+# The reference shade drawn for a family when no measured shade is available.
+FAMILY_REFERENCE = {name: name for name in FAMILIES} | {"Neutral": "Beige"}

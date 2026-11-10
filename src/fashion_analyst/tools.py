@@ -6,13 +6,15 @@ import numpy as np
 import pandas as pd
 from langchain_core.tools import tool
 
-from .colours import REFERENCE_COLOURS
+from .colours import COLOUR_FAMILIES, FAMILIES
 from .config import ARTIFACT_DIR
 from .embeddings import ClipTextEncoder
 
 MAX_RESULTS = 20
-COLOUR_ALIASES = {"navy": "Navy Blue", "gray": "Grey", "burgundy": "Maroon", "violet": "Purple"}
-ITEM_FIELDS = ["articleType", "gender", "baseColour", "season", "usage", "cluster", "colour_name"]
+# Shade words people use that the catalogue vocabulary does not contain.
+COLOUR_ALIASES = {"navy": "Blue", "gray": "Grey", "violet": "Purple", "cream": "White", "golden": "Yellow"}
+ITEM_FIELDS = ["articleType", "gender", "baseColour", "season", "usage", "cluster",
+               "colour_family", "colour_confidence"]
 
 
 class CollectionError(ValueError):
@@ -49,6 +51,8 @@ class CollectionStore:
         record = {"item_id": int(item["id"]), "name": item["productDisplayName"]}
         record.update({field: item[field] for field in ITEM_FIELDS})
         record["cluster"] = int(record["cluster"])
+        record["colour_confidence"] = float(record["colour_confidence"])
+        record["measured_shade"] = {"name": item["colour_name"], "hex": item["colour_hex"]}
         if score is not None:
             record["similarity"] = round(float(score), 3)
         return record
@@ -77,22 +81,24 @@ class CollectionStore:
         return {"cluster_id": cluster_id, "name": cluster["name"], "palette": cluster["palette"]}
 
     def resolve_colour(self, colour: str) -> str:
+        """Map a colour or shade name to one of the tracked colour families."""
         cleaned = colour.strip().lower()
-        canonical = {name.lower(): name for name in REFERENCE_COLOURS}
-        if cleaned in canonical:
-            return canonical[cleaned]
-        if cleaned in COLOUR_ALIASES:
-            return COLOUR_ALIASES[cleaned]
+        families = {name.lower(): name for name in FAMILIES}
+        shades = {name.lower(): family for name, family in COLOUR_FAMILIES.items()}
+        for lookup in (families, shades, COLOUR_ALIASES):
+            if cleaned in lookup:
+                return lookup[cleaned]
         raise CollectionError(
-            f"Colour '{colour}' is not tracked. Tracked colours: {', '.join(REFERENCE_COLOURS)}."
+            f"Colour '{colour}' is not tracked. Tracked colour families: {', '.join(FAMILIES)}."
         )
 
     def clusters_by_colour(self, colour: str) -> dict:
         name = self.resolve_colour(colour)
-        shares = self.items["colour_name"].eq(name).groupby(self.items["cluster"]).mean()
+        shares = self.items["colour_family"].eq(name).groupby(self.items["cluster"]).mean()
         ranked = shares.sort_values(ascending=False, kind="stable").head(5)
         return {
-            "colour": name,
+            "requested": colour,
+            "colour_family": name,
             "clusters_ranked_by_item_share": [
                 {"cluster_id": int(c), "name": self.clusters[int(c)]["name"], "item_share": round(float(s), 3)}
                 for c, s in ranked.items()
@@ -142,17 +148,20 @@ def build_tools(store: CollectionStore) -> list:
 
     @tool
     def cluster_colours(cluster_id: int) -> str:
-        """Return one cluster's main colours, ordered by the share of its items in each colour."""
+        """Return one cluster's main colour families, ordered by the share of its items in each."""
         return _respond(store.cluster_colours, cluster_id)
 
     @tool
     def find_clusters_by_colour(colour: str) -> str:
-        """Rank clusters by the share of their items whose main colour is `colour`."""
+        """Rank clusters by the share of their items in the colour family of `colour`.
+
+        Shades map to their family, for example navy to Blue."""
         return _respond(store.clusters_by_colour, colour)
 
     @tool
     def get_item(item_id: int) -> str:
-        """Look up one item: name, catalogue labels, cluster and detected colour (colour_name)."""
+        """Look up one item: name, catalogue labels (baseColour), cluster, the colour family
+        detected from the image (colour_family, with its confidence) and the measured shade."""
         return _respond(store.get_item, item_id)
 
     @tool

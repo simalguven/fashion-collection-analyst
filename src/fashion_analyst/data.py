@@ -15,14 +15,23 @@ def catalogue_metadata(dataset) -> pd.DataFrame:
     return dataset.remove_columns("image").to_pandas()
 
 
-def materialise_sample(dataset, size: int = SAMPLE_SIZE, seed: int = SEED) -> pd.DataFrame:
+def materialise_sample(
+    dataset,
+    size: int = SAMPLE_SIZE,
+    seed: int = SEED,
+    start: int = 0,
+    raw_name: str = "sample_raw.parquet",
+) -> pd.DataFrame:
     """Write a random sample of images to disk and return its metadata.
+
+    ``start`` selects a later slice of the same shuffle, so samples taken with
+    non-overlapping slices never share a product.
 
     Images that cannot be decoded are skipped and recorded with
     ``decodable=False`` so that the quality report can count them.
     """
     IMAGE_DIR.mkdir(parents=True, exist_ok=True)
-    subset = dataset.shuffle(seed=seed).select(range(size))
+    subset = dataset.shuffle(seed=seed).select(range(start, start + size))
     rows = []
     for index in range(size):
         try:
@@ -36,5 +45,5 @@ def materialise_sample(dataset, size: int = SAMPLE_SIZE, seed: int = SEED) -> pd
             row = {"id": None, "path": None, "decodable": False}
         rows.append(row)
     frame = pd.DataFrame(rows)
-    frame.to_parquet(ARTIFACT_DIR / "sample_raw.parquet")
+    frame.to_parquet(ARTIFACT_DIR / raw_name)
     return frame

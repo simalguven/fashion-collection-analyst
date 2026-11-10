@@ -7,6 +7,9 @@ from typing import Callable
 from fashion_analyst.tools import CollectionStore
 
 
+MAX_TOOL_CALLS = 5
+
+
 @dataclass
 class Case:
     case_id: str
@@ -16,6 +19,18 @@ class Case:
     expected: str
     required_tools: set = field(default_factory=set)
     forbidden_tools: set = field(default_factory=set)
+    tool_check: Callable[[list], bool] | None = None
+
+
+def tools_acceptable(case: Case, calls: list[dict]) -> bool:
+    """Check which tools ran, how many calls were made, and any case-specific rule."""
+    names = {call["name"] for call in calls}
+    return (
+        case.required_tools <= names
+        and not names & case.forbidden_tools
+        and len(calls) <= MAX_TOOL_CALLS
+        and (case.tool_check is None or case.tool_check(calls))
+    )
 
 
 def has_number(text: str, value: int) -> bool:
@@ -96,8 +111,8 @@ def build_cases(store: CollectionStore) -> list[Case]:
              {"search_items_by_text"}),
         Case("item_lookup", "happy_path",
              f"For item {item_id}, what colour does the catalogue list and what colour did the image analysis detect?",
-             lambda a: has_any(a, item["baseColour"]) and has_any(a, item["colour_name"]),
-             f"{item['baseColour']} and {item['colour_name']}", {"get_item"}),
+             lambda a: has_any(a, item["baseColour"]) and has_any(a, item["colour_family"]),
+             f"{item['baseColour']} and {item['colour_family']}", {"get_item"}),
         Case("colour_ranking", "happy_path", "Which cluster has the highest share of black items?",
              lambda a: has_number(a, black_leader["cluster_id"]),
              f"cluster {black_leader['cluster_id']}", {"find_clusters_by_colour"}),
@@ -123,7 +138,12 @@ def build_cases(store: CollectionStore) -> list[Case]:
         Case("unknown_colour", "edge_case", "Which cluster has the most ultraviolet items?",
              lambda a: has_any(a, "not tracked", "isn't tracked", "not a tracked", "not available",
                                "tracked colours", "doesn't track", "don't track", "does not track"),
-             "says the colour is not tracked", {"find_clusters_by_colour"}),
+             "says the colour is not tracked and does not query a substitute",
+             {"find_clusters_by_colour"},
+             tool_check=lambda calls: all(
+                 call["args"].get("colour", "").lower() == "ultraviolet"
+                 for call in calls if call["name"] == "find_clusters_by_colour"
+             )),
         Case("limit_too_high", "edge_case", f"Find 500 items similar to item {item_id}.",
              lambda a: has_number(a, 20), "explains the limit of 20"),
         Case("ambiguous_reference", "edge_case", "What colours dominate this cluster?",

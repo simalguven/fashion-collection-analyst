@@ -13,7 +13,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path[:0] = [str(ROOT / "src"), str(ROOT / "evals")]
 
-from cases import build_cases
+from cases import build_cases, tools_acceptable
 from fashion_analyst.agent import ask, build_agent
 from fashion_analyst.config import REPORT_DIR
 from fashion_analyst.tools import CollectionStore
@@ -54,8 +54,7 @@ def grade(case, agent) -> dict:
                 "answer": "", "error": f"{type(error).__name__}: {str(error)[:300]}",
                 "tools_called": [], "tokens": 0, "seconds": 0.0}
 
-    called = {call["name"] for call in run.tool_calls}
-    tools_ok = case.required_tools <= called and not called & case.forbidden_tools
+    tools_ok = tools_acceptable(case, run.tool_calls)
     answer_ok = bool(run.answer) and case.check(run.answer)
     return {**record, "passed": tools_ok and answer_ok, "tools_ok": tools_ok, "answer_ok": answer_ok,
             "answer": run.answer, "error": None, "tools_called": run.tool_calls,

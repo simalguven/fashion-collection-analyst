@@ -13,7 +13,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
 import numpy as np
 import pandas as pd
 
-from fashion_analyst import clustering, colours, data, embeddings, plots, quality
+from fashion_analyst import clustering, colour_classifier, colours, data, embeddings, plots, quality
 from fashion_analyst.config import (
     ARTIFACT_DIR,
     BACKBONES,
@@ -57,26 +57,51 @@ def compare_backbones(items: pd.DataFrame) -> tuple[dict, pd.DataFrame]:
 def score_colour_extraction(items: pd.DataFrame, whole_image_names: list[str]) -> dict:
     """Compare predicted colour families with labels and two simple baselines.
 
-    Only odd rows are scored: even rows were used to tune the colour method.
+    Only odd rows are scored: even rows were used to tune the OpenCV method.
+    Classifier predictions are out-of-fold, but its settings were chosen on this
+    sample; the unseen-product score is in reports/colour_method_comparison.json.
     """
     truth = items["baseColour"].map(colours.family)
     scored = truth.notna() & (items.index.to_series() % 2 == 1)
     masked = items["colour_name"].map(colours.family)[scored]
+    classifier = items["colour_family"][scored]
     whole = pd.Series(whole_image_names, index=items.index).map(colours.family)[scored]
     truth = truth[scored]
-    by_department = {
-        department: round(float((masked[index] == truth[index]).mean()), 3)
-        for department, index in truth.groupby(items.loc[scored, "masterCategory"]).groups.items()
-        if len(index) >= 30
-    }
+
+    def by_department(predicted: pd.Series) -> dict:
+        return {
+            department: round(float((predicted[index] == truth[index]).mean()), 3)
+            for department, index in truth.groupby(items.loc[scored, "masterCategory"]).groups.items()
+            if len(index) >= 30
+        }
+
     return {
         "items_scored": int(scored.sum()),
         "items_with_unmapped_label": int(items["baseColour"].map(colours.family).isna().sum()),
+        "accuracy_classifier_out_of_fold": round(float((classifier == truth).mean()), 3),
         "accuracy_with_background_removal": round(float((masked == truth).mean()), 3),
         "accuracy_whole_image": round(float((whole == truth).mean()), 3),
         "accuracy_always_majority_family": round(float(truth.value_counts(normalize=True).iloc[0]), 3),
-        "accuracy_by_department": by_department,
+        "classifier_accuracy_by_department": by_department(classifier),
+        "opencv_accuracy_by_department": by_department(masked),
     }
+
+
+def classify_colours(items: pd.DataFrame, vectors: dict) -> pd.DataFrame:
+    """Predict colour families, adding the extra training products when they exist."""
+    labels = items["baseColour"].map(colours.family).to_numpy(dtype=object)
+    extra = {}
+    settings = ARTIFACT_DIR / "colour_classifier.json"
+    if settings.exists():
+        extra = {"extra_matrix": np.load(ARTIFACT_DIR / "colour_extra_features.npy"),
+                 "extra_labels": np.load(ARTIFACT_DIR / "colour_extra_labels.npy"),
+                 "c": json.loads(settings.read_text())["c"]}
+        print(f"Colour classifier: adding {len(extra['extra_labels'])} extra training products")
+    else:
+        print("Colour classifier: sample only (run scripts/train_colour_classifier.py for more)")
+    families, confidence = colour_classifier.predict_families(
+        colour_classifier.features(vectors), labels, **extra)
+    return items.assign(colour_family=families, colour_confidence=confidence)
 
 
 def extract_colours(items: pd.DataFrame) -> tuple[pd.DataFrame, list[str]]:
@@ -105,7 +130,8 @@ def summarise_clusters(items: pd.DataFrame) -> list[dict]:
                 "gender": top("gender"),
                 "usage": top("usage"),
                 "season": top("season"),
-                "palette": colours.build_palette(group["colour_name"], group["colour_hex"]),
+                "palette": colours.build_palette(group["colour_family"], group["colour_name"],
+                                                 group["colour_hex"]),
             }
         )
     return summaries
@@ -129,6 +155,7 @@ def main() -> None:
     items["umap_x"], items["umap_y"] = projection[:, 0], projection[:, 1]
 
     items, whole_names = extract_colours(items)
+    items = classify_colours(items, vectors)
     clusters = summarise_clusters(items)
     colour_scores = score_colour_extraction(items, whole_names)
 
